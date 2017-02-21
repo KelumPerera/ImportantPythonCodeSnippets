@@ -13,7 +13,7 @@ from pandas import ExcelWriter
 path = "C:/Users/yourname/folder/path"
 file_identifier = "*.xlsx"
 
-#Mearge excel files into a pandas dataframe
+#Merge excel files into a pandas dataframe
 merged_data = pd.DataFrame()
 for f in glob.glob(path + "/*" + file_identifier):
     df = pd.read_excel(f)
@@ -37,7 +37,7 @@ import pandas as pd
 path = "C:/Users/yourname/folder/path"
 file_identifier = "*.csv"   # If these are text files use "*.txt"
 
-#Mearge CSV files into a pandas dataframe
+#Merge CSV files into a pandas dataframe
 merged_csv = pd.DataFrame()
 for f in glob.glob(path + "/*" + file_identifier):
     df = pd.read_csv(f)
