@@ -1,14 +1,15 @@
 # -*- coding: utf-8 -*-
 """
 Created on Tue Feb 21 23:18:09 2017
-
+Code: Combines similer CSV or excel files using python 
 @author: Kelum Perera
 """
-# Excel files
+
 import glob
 import pandas as pd
 from pandas import ExcelWriter
 
+# Excel files
 # Define the path to folder contained excel files to combine/merge
 path = "C:/Users/yourname/folder/path"
 file_identifier = "*.xlsx"
@@ -29,13 +30,13 @@ merged_data.to_csv('C:/Users/yourname/folder/Combinedfile.csv', sep='\t', encodi
 
 
 
-#CSV files
+#CSV (Comma Separated Value) files
 import glob
 import pandas as pd
 
 # Define the path to folder contained CSV files to combine/merge
 path = "C:/Users/yourname/folder/path"
-file_identifier = "*.csv"   # If these are text files use "*.txt"
+file_identifier = "*.csv"   # If your files are text files(Values separated by Tab) use "*.txt" or (Values separated by pip (|) use ".pip" 
 
 #Merge CSV files into a pandas dataframe
 merged_csv = pd.DataFrame()
@@ -45,3 +46,28 @@ for f in glob.glob(path + "/*" + file_identifier):
 
 # Write the data frame to a CSV file.
 merged_CSV.to_csv('C:/Users/yourname/folder/Combinedfile.csv', sep='\t', encoding='utf-8', index=False)
+
+
+# Excel file with many similar sheets
+# Define the path to the excel file which has many similar sheets to combine/merge
+pathToExcelFile = "C:/Users/yourname/folder/path/Myfile.xlsx"
+
+# Load spreadsheet
+xl = pd.ExcelFile(excelFile)
+
+# Load the worksheet names
+worksheets = xl.sheet_names
+
+#Merge excel worksheets into a pandas dataframe
+merged_data = pd.DataFrame()
+for ws in worksheets:
+    df = pd.read_excel(pathToExcelFile, sheetname=ws, skiprows=0) # Skip some number of rows in excel sheets if required
+    merged_data = merged_data.append(df,ignore_index=True)
+
+# Write the data frame to a excel sheet.
+writer = ExcelWriter('C:/Users/yourname/folder/Combinedfile.xlx')
+merged_data.to_excel(writer,'Sheet1',index=False)
+writer.save()
+
+# Write the data frame to a CSV file.
+merged_data.to_csv('C:/Users/yourname/folder/Combinedfile.csv', sep='\t', encoding='utf-8', index=False)
