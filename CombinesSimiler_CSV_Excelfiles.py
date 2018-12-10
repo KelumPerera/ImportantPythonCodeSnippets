@@ -71,3 +71,25 @@ writer.save()
 
 # Write the data frame to a CSV file.
 merged_data.to_csv('C:/Users/yourname/folder/Combinedfile.csv', sep='\t', encoding='utf-8', index=False)
+
+
+
+
+# Read a particular named worksheets in each excel work books in a given folder
+# Write to a CSV files one by one
+
+import glob
+import pandas as pd
+
+# Excel files
+# Define the path to folder contained excel files to combine/merge
+path = "C:/Users/yourname/folder/path"
+file_identifier = "*.xlsx"
+ws = "GL"
+
+#Raed particular worksheet in each excel file and save into CSV files
+df = pd.DataFrame()
+for f in glob.glob(path + "/*" + file_identifier):
+    df = pd.read_excel(f,sheetname=ws)
+    writer = (f+".csv")
+    df.to_csv(writer, sep='\t', encoding='utf-8', index=False)
