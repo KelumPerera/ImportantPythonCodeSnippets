@@ -38,4 +38,31 @@ file['Duration Mins'] = pd.to_numeric(file['Duration Mins'], errors='coerce')
 file_BACKUP = deepcopy(file)
 
 
+# How to drop specific column values using drop duplicates
+
+df2 = pd.DataFrame({ 'ABC':['Second', 'Third', 'Third', 'Fourth', 'Fourth'],
+                    'Name':['John', 'Tom', 'Tom', 'Tom','One'],
+                    'Class':['Second', 'Third', 'Third', 'Fourth', 'Fourth'],
+                    '123':['Second', 'Third', 'Third', 'Fourth', 'Fourth']
+                    })
+
+
+df2['Class1'] = df2['Class']
+df2.insert(0, 'Class1', df2.pop('Class1'))
+df2.insert(1, 'Class', df2.pop('Class'))
+
+df2.iloc[:, 1:3] = df2.iloc[:, 1:3].drop_duplicates(['Class'],keep= "first")
+
+
+
+# How to do a conditional group by sum
+
+df2 = pd.DataFrame({ 'Name':['Second', 'Third', 'Third', 'Fourth', 'Fourth'],
+                    'Sequance':['A100', 'A100', 'A100', 'B100','B100'],
+                    'Class':['Second', 'Third', 'Third', 'Third', 'Fourth'],
+                    'Amount':[100, 200, 300, 400, 500]
+                    })
+
+df2['Sq_wise_TotalValue'] = (df2.assign(Amount = df2['Value'].where((df2['Class'] != "Second") )).groupby(['Sequance'])['Amount'].transform('sum'))
+
 
