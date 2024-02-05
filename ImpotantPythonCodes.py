@@ -86,3 +86,20 @@ date_list = pd.date_range(start_date, end_date, freq=D)
 my_date_list_asStringElements= [date_obj.strftime('%Y-%m-%d') for date_obj in date_list]
 
 
+
+# Read data from MS SQL server
+from sqlalchemy import create_engine, text
+import pyodbc
+
+server = 'DESKTOP-UK769VU\SQLEXPRESS'  # Change to your SQL server name
+driver = 'SQL+Server'
+db = 'test'              # Change to your desired database name
+un = 'username' 
+pw = 'password'
+
+engine = create_engine('mssql+pyodbc://{}/{}?driver={}'.format(server, db, driver))
+engine1 = create_engine('mssql+pyodbc://{}:{}@{}/{}?driver={}'.format(un,pw,server, db, driver))
+
+with engine.connect() as conn:
+    test = pd.read_sql_query(text("select * from dbo.nlp_features_train"), conn)
+
