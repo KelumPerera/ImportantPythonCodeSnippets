@@ -66,3 +66,23 @@ df2 = pd.DataFrame({ 'Name':['Second', 'Third', 'Third', 'Fourth', 'Fourth'],
 df2['Sq_wise_TotalValue'] = (df2.assign(Amount = df2['Value'].where((df2['Class'] != "Second") )).groupby(['Sequance'])['Amount'].transform('sum'))
 
 
+
+
+
+# Create a list of dates as string values
+
+from datetime import datetime
+import pandas as pd
+ 
+# start date
+start_date = datetime.strptime("2023-03-01", "%Y-%m-%d")
+end_date = datetime.strptime("2023-03-10", "%Y-%m-%d")
+ 
+# difference between each date. D means one day
+D = 'D'
+ 
+date_list = pd.date_range(start_date, end_date, freq=D)
+ 
+my_date_list_asStringElements= [date_obj.strftime('%Y-%m-%d') for date_obj in date_list]
+
+
