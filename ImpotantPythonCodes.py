@@ -103,3 +103,18 @@ engine1 = create_engine('mssql+pyodbc://{}:{}@{}/{}?driver={}'.format(un,pw,serv
 with engine.connect() as conn:
     test = pd.read_sql_query(text("select * from dbo.nlp_features_train"), conn)
 
+
+
+# Search for whether a text file contain a text.
+file = open(r"E:\filepath\part-file.csv",'r')
+lines = file.readlines()
+file.close()
+
+lines_we_want = []
+
+for i in range(len(lines)):
+    if "my word to check" in lines[i]:
+        lines_we_want.append(lines[i].strip("\n"))
+
+print(lines_we_want)
+
