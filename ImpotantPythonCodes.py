@@ -118,3 +118,14 @@ for i in range(len(lines)):
 
 print(lines_we_want)
 
+
+
+# If you want to install a python package to a particular python version
+# Change the command line directory to python installed folder
+
+# cd C:\python3_12
+# Then install the package
+
+# python.exe -m pip install faker
+
+
