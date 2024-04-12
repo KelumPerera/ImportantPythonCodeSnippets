@@ -85,6 +85,25 @@ date_list = pd.date_range(start_date, end_date, freq=D)
  
 my_date_list_asStringElements= [date_obj.strftime('%Y-%m-%d') for date_obj in date_list]
 
+# get count of unique records, assign sequence for similar records
+df2 = pd.DataFrame({ 'Brand':['Second', 'Second', 'Second', 'Fourth', 'Fourth','Fourth','Fifth'],
+                    'OutletID':['John', 'John', 'John', 'Tom','Tom','Tom','Tim'],
+                    'Month':['Second', 'Second', 'Second', 'Fourth', 'Fourth','Fourth','Fifth'],
+                    'SalesVolumes':[10, 10, 10, 5, 5,6,7],
+                    'source_file':['10', '20', '10', '10', '20','60','70'],
+                    'Ref':['Ref1', 'Ref2', 'Ref3', 'Ref4', 'Ref5', 'Ref6', 'Ref7']
+                    })
+
+
+df2["Record_count"] = df2.groupby(['Brand',"OutletID",'Month'])['Ref'].transform(lambda x: len(x.unique()))
+df2["Grouped_volume"] = df2.groupby(['Brand',"OutletID",'Month'])["SalesVolumes"].transform('sum')
+
+df2["Grouped_Filecount"] = df2.groupby(['Brand',"OutletID",'Month',"SalesVolumes"])["source_file"].transform(lambda x: len(x.unique()))
+
+df2["Grouped_FileCumCount"] = df2.groupby(['Brand',"OutletID",'Month',"SalesVolumes"]).cumcount().add(1)
+
+df2['Sequance'] = (~df2[['Brand',"OutletID",'Month',"SalesVolumes"]].duplicated()).cumsum()
+
 
 
 # Read data from MS SQL server
