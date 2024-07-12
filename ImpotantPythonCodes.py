@@ -18,6 +18,32 @@ file = pd.read_csv(r"\path\to\file\Cell_usage.txt",delimiter='|', names = ['Date
 # Load data from fixt width txt file
 file = pd.read_fwf(r"\path\to\file\Cell_usage.txt", names = ['Date','site Id','Cell ID','sitename','Duration Mins'] ,skiprows=0)
 
+# Read data from a text file with fixed-width columns
+colspecs = [(0, 9), (9, 18), (18, 49), (49, 51), (51, 82), (82, -1)]
+fixedwidth_text_data = pd.read_fwf(r'C:\Users\My PC\Downloads\fixed_with_text.txt', skiprows=3, skipfooter=2, colspecs=colspecs, names=['ColumnHeading1', 'ColumnHeading2', 'ColumnHeading3'])
+
+# Read data from JSON file
+import json
+import requests
+JSON_Data = requests.request("GET", "https://filesamples.com/samples/code/json/sample1.json").json()
+JSON_Data_df = pd.json_normalize(JSON_Data)
+
+# Read data from Microsoft SQL server database table
+import pyodbc                             # if not installed, run in command line3, pip install pyodbc
+
+# Define the parameters such as server name & database name
+server = 'DESKTOP-9999999\SQLEXPRESS'      # chnage to your server name
+db = 'mydatabase'                          # change to your database to be queried
+
+# Create the connection
+conn = pyodbc.connect('DRIVER={SQL Server};SERVER=' + server + ';DATABASE=' + db + ';Trusted_Connection=yes')
+
+# Define a select query
+sql = """SELECT * FROM mytable """
+
+# Run the query using pandas read_sql method
+df = pd.read_sql(sql, conn)              # SQL query result will read into to pandas dataframe
+
 # Rename the columns
 file = file.rename(columns={0: 'Date',1 : 'site Id',2 : 'Cell ID',3 : 'sitename', 4: 'Duration Mins'})
 
