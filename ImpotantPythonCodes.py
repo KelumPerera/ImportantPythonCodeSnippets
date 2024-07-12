@@ -34,6 +34,26 @@ del file['Date']
 # Change the "Duration Mins" column from object format to integer format
 file['Duration Mins'] = pd.to_numeric(file['Duration Mins'], errors='coerce')
 
+# Create a correct datatime format when the given data is in multiple datetime formats (first read the column as text)
+
+def parse_datetime(date_string):
+    formats = [
+        '%d/%m/%Y %H:%M:%S',
+        '%Y-%m-%d %H:%M:%S',
+        '%d/%m/%Y %H:%M',
+        '%m/%d/%Y %I:%M:%S %p',
+        '%d/%m/%Y'
+    ]
+    for fmt in formats:
+        try:
+            return pd.to_datetime(date_string, format=fmt)
+        except ValueError:
+            continue
+    raise ValueError("Unrecognized datetime format")
+
+df["Initiated Date/Time "] = df["Initiated Date/Time "].apply(parse_datetime)
+
+
 # Create a copy of the dataset 
 file_BACKUP = deepcopy(file)
 
@@ -146,5 +166,4 @@ print(lines_we_want)
 # Then install the package
 
 # python.exe -m pip install faker
-
 
